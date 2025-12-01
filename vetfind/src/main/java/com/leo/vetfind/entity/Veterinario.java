@@ -13,7 +13,7 @@ import lombok.*;
 public class Veterinario {
 
     /*acredito q seja melhor eu utilizar o mesmo Id para usuarios e veterinarios
-      e ao inves de criar um ID unico para veterinarios, eu vejo qual o tipo do usuario*/
+      e ao inves de criar um ID unico para veterinarios, eu vejo qual o tipo do usuario */
 
     @Id
     private Long id;
