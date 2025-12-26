@@ -2,26 +2,35 @@ package com.leo.vetfind.controller;
 
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioRequestDTO;
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioResponseDTO;
-import com.leo.vetfind.service.veterinario.VeterinarioService;
+import com.leo.vetfind.service.veterinario.VeterinarioServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/veterinarios")
 @RequiredArgsConstructor
 public class VeterinarioController {
 
-    private final VeterinarioService veterinarioService;
+    private final VeterinarioServiceImpl veterinarioService;
 
     @PostMapping
     public ResponseEntity<CadastroVeterinarioResponseDTO> criarVeterinario(@Valid @RequestBody CadastroVeterinarioRequestDTO dto) {
         CadastroVeterinarioResponseDTO response = veterinarioService.criarVeterinario(dto);
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
     }
 
+    @GetMapping
+    public ResponseEntity<List<CadastroVeterinarioResponseDTO>> getAll() {
+            return ResponseEntity.ok(veterinarioService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CadastroVeterinarioResponseDTO> getById(@PathVariable Long id) {
+        CadastroVeterinarioResponseDTO response = veterinarioService.getById(id);
+            return ResponseEntity.ok(response);
+    }
 }

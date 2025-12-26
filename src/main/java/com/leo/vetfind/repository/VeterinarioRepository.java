@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> {
 
     Optional<Veterinario> findByCrmv (String crmv);
-
     boolean existsByCrmv(String crmv);
 
 }
