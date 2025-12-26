@@ -68,7 +68,8 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 
     @Override
     public List<CadastroVeterinarioResponseDTO> getAll() {
-        return veterinarioRepository.findAll()
+        return veterinarioRepository
+                .findByUsuario_TipoUsuario(TipoUsuario.VETERINARIO)
                 .stream()
                 .map(veterinarioMapper::toResponseDTO)
                 .toList();
