@@ -2,6 +2,7 @@ package com.leo.vetfind.service.veterinario;
 
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioRequestDTO;
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioResponseDTO;
+import com.leo.vetfind.dto.veterinario.UpdateVeterinarioRequestDTO;
 import com.leo.vetfind.entity.TipoUsuario;
 import com.leo.vetfind.entity.usuario.Usuario;
 import com.leo.vetfind.entity.veterinario.Veterinario;
@@ -73,4 +74,23 @@ public class VeterinarioServiceImpl implements VeterinarioService{
                 .map(veterinarioMapper::toResponseDTO)
                 .toList();
     }
+
+    @Override
+    public CadastroVeterinarioResponseDTO atualizar(Long id, UpdateVeterinarioRequestDTO dto) {
+
+        Veterinario veterinario = veterinarioRepository.findById(id)
+                .orElseThrow(() -> new VeterinarioNotFoundException(id));
+
+        if (!veterinario.getCrmv().equals(dto.getCrmv())
+                && veterinarioRepository.existsByCrmv(dto.getCrmv())) {
+            throw new CrmvCadastradoException();
+        }
+
+        veterinario.setCrmv(dto.getCrmv());
+
+        Veterinario atualizado = veterinarioRepository.save(veterinario);
+
+        return veterinarioMapper.toResponseDTO(atualizado);
+    }
+
 }

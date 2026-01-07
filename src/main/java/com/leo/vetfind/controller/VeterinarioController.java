@@ -2,6 +2,7 @@ package com.leo.vetfind.controller;
 
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioRequestDTO;
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioResponseDTO;
+import com.leo.vetfind.dto.veterinario.UpdateVeterinarioRequestDTO;
 import com.leo.vetfind.service.veterinario.VeterinarioServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,13 @@ public class VeterinarioController {
     public ResponseEntity<CadastroVeterinarioResponseDTO> getById(@PathVariable Long id) {
         CadastroVeterinarioResponseDTO response = veterinarioService.getById(id);
             return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CadastroVeterinarioResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody UpdateVeterinarioRequestDTO dto) {
+        CadastroVeterinarioResponseDTO response =
+                veterinarioService.atualizar(id, dto);
+
+        return ResponseEntity.ok(response);
     }
 }
