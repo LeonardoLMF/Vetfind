@@ -17,4 +17,5 @@ public interface VeterinarioService {
 
     CadastroVeterinarioResponseDTO atualizar(Long id, UpdateVeterinarioRequestDTO dto);
 
+    void deletar (Long id);
 }

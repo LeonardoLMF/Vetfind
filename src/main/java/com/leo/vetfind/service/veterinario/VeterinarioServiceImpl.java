@@ -93,4 +93,16 @@ public class VeterinarioServiceImpl implements VeterinarioService{
         return veterinarioMapper.toResponseDTO(atualizado);
     }
 
+    @Override
+    public void deletar(Long id) {
+
+        Veterinario veterinario = veterinarioRepository.findById(id)
+                .orElseThrow(() -> new VeterinarioNotFoundException(id));
+
+        Usuario usuario = veterinario.getUsuario();
+        usuario.setVeterinario(null);
+
+        veterinarioRepository.delete(veterinario);
+    }
+
 }

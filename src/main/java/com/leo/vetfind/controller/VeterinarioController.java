@@ -42,4 +42,11 @@ public class VeterinarioController {
 
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        veterinarioService.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
