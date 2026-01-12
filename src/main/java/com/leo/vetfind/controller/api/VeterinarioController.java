@@ -1,4 +1,4 @@
-package com.leo.vetfind.controller;
+package com.leo.vetfind.controller.api;
 
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioRequestDTO;
 import com.leo.vetfind.dto.veterinario.CadastroVeterinarioResponseDTO;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/veterinarios")
+@RequestMapping("/api/veterinarios")
 @RequiredArgsConstructor
 public class VeterinarioController {
 
