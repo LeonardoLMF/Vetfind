@@ -62,7 +62,7 @@ public class UsuarioServiceImpl implements UsuarioService{
             throw new EmailJaCadastradoException();
         }
 
-        // atualiza apenas campos permitidos
+        // atualiza     apenas campos permitidos
         usuario.setEmail(dto.getEmail());
         usuario.setTelefone(dto.getTelefone());
         usuario.setSenha(dto.getSenha());

@@ -6,9 +6,7 @@ import com.leo.vetfind.dto.veterinario.UpdateVeterinarioRequestDTO;
 import com.leo.vetfind.entity.TipoUsuario;
 import com.leo.vetfind.entity.usuario.Usuario;
 import com.leo.vetfind.entity.veterinario.Veterinario;
-import com.leo.vetfind.exception.CrmvCadastradoException;
-import com.leo.vetfind.exception.UsuarioNotFoundException;
-import com.leo.vetfind.exception.VeterinarioNotFoundException;
+import com.leo.vetfind.exception.*;
 import com.leo.vetfind.mapper.VeterinarioMapper;
 import com.leo.vetfind.repository.UsuarioRepository;
 import com.leo.vetfind.repository.VeterinarioRepository;
@@ -238,6 +236,66 @@ public class VeterinarioServiceImplTest {
         assertThrows(VeterinarioNotFoundException.class,
                 () -> veterinarioService.deletar(99L));
     }
+
+    @Test
+    void LancarExcecaoQuandoUsuarioNaoForVeterinario() {
+
+        CadastroVeterinarioRequestDTO dto = CadastroVeterinarioRequestDTO.builder()
+                .crmv("CRMV123")
+                .usuarioId(1L)
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .id(1L)
+                .tipoUsuario(TipoUsuario.PROPRIETARIO) // NÃO é veterinário
+                .build();
+
+        when(veterinarioRepository.existsByCrmv("CRMV123"))
+                .thenReturn(false);
+
+        when(usuarioRepository.findById(1L))
+                .thenReturn(Optional.of(usuario));
+
+        TipoUsuarioInvalidoException exception =
+                assertThrows(TipoUsuarioInvalidoException.class, () ->
+                        veterinarioService.criarVeterinario(dto)
+                );
+
+        assertEquals("Usuario não é do tipo VETERINARIO", exception.getMessage());
+
+        verify(veterinarioRepository, never()).save(any());
+    }
+
+    @Test
+    void LancarExcecaoQuandoUsuarioJaPossuirVeterinario() {
+
+        CadastroVeterinarioRequestDTO dto = CadastroVeterinarioRequestDTO.builder()
+                .crmv("CRMV123")
+                .usuarioId(1L)
+                .build();
+
+        Usuario usuario = Usuario.builder()
+                .id(1L)
+                .tipoUsuario(TipoUsuario.VETERINARIO)
+                .veterinario(Veterinario.builder().id(10L).build())
+                .build();
+
+        when(veterinarioRepository.existsByCrmv("CRMV123"))
+                .thenReturn(false);
+
+        when(usuarioRepository.findById(1L))
+                .thenReturn(Optional.of(usuario));
+
+        VeterinarioJaVinculadoException exception =
+                assertThrows(VeterinarioJaVinculadoException.class, () ->
+                        veterinarioService.criarVeterinario(dto)
+                );
+
+        assertEquals("Usuário ja possui cadastro de veterinario", exception.getMessage());
+
+        verify(veterinarioRepository, never()).save(any());
+    }
+
 
 }
 
