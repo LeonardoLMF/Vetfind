@@ -6,6 +6,7 @@ import com.leo.vetfind.dto.usuario.UpdateUsuarioRequestDTO;
 import com.leo.vetfind.entity.usuario.Usuario;
 import com.leo.vetfind.exception.EmailJaCadastradoException;
 import com.leo.vetfind.exception.UsuarioNotFoundException;
+import com.leo.vetfind.exception.UsuarioPossuiVeterinarioException;
 import com.leo.vetfind.mapper.UsuarioMapper;
 import com.leo.vetfind.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,6 +70,19 @@ public class UsuarioServiceImpl implements UsuarioService{
         Usuario atualizado = usuarioRepository.save(usuario);
 
         return usuarioMapper.toResponseDTO(atualizado);
+    }
+
+    @Override
+    public void deletarUsuario(Long id) {
+
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNotFoundException(id));
+
+        if (usuario.getVeterinario() != null) {
+            throw new UsuarioPossuiVeterinarioException();
+        }
+
+        usuarioRepository.delete(usuario);
     }
 
 }

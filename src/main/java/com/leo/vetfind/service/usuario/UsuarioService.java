@@ -16,4 +16,6 @@ public interface UsuarioService {
     CadastroUsuarioResponseDTO buscarUsuarioPorId(Long id);
 
     CadastroUsuarioResponseDTO atualizar(Long id, UpdateUsuarioRequestDTO dto);
+
+    void deletarUsuario(Long id);
 }
