@@ -29,7 +29,7 @@ public class UserServiceImplTest {
     private UserMapper userMapper;
 
     @InjectMocks
-    private UserServiceImpl usuarioService;
+    private UserServiceImpl userService;
 
     @Test
     void CriarUsuarioComSucesso() {
@@ -39,7 +39,7 @@ public class UserServiceImplTest {
                         .email("teste@email.com")
                         .build();
 
-        User usuario = User.builder()
+        User user = User.builder()
                 .id(1L)
                 .email("teste@email.com")
                 .build();
@@ -54,22 +54,22 @@ public class UserServiceImplTest {
                 .thenReturn(false);
 
         when(userMapper.toEntity(request))
-                .thenReturn(usuario);
+                .thenReturn(user);
 
-        when(userRepository.save(usuario))
-                .thenReturn(usuario);
+        when(userRepository.save(user))
+                .thenReturn(user);
 
-        when(userMapper.toResponseDTO(usuario))
+        when(userMapper.toResponseDTO(user))
                 .thenReturn(response);
 
-        UserResponse resultado =
-                usuarioService.criarUsuario(request);
+        UserResponse result =
+                userService.createUser(request);
 
-        assertNotNull(resultado);
-        assertEquals("teste@email.com", resultado.getEmail());
+        assertNotNull(result);
+        assertEquals("teste@email.com", result.getEmail());
 
         verify(userRepository).existsByEmail("teste@email.com");
-        verify(userRepository).save(usuario);
+        verify(userRepository).save(user);
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UserServiceImplTest {
                 .thenReturn(true);
 
         assertThrows(EmailAlreadyExistsException.class,
-                () -> usuarioService.criarUsuario(request));
+                () -> userService.createUser(request));
 
         verify(userRepository, never()).save(any());
     }
@@ -92,15 +92,15 @@ public class UserServiceImplTest {
     @Test
     void BuscarUsuarioPorIdComSucesso() {
 
-        User usuario = User.builder()
+        User user = User.builder()
                 .id(1L)
                 .email("teste@email.com")
                 .build();
 
         when(userRepository.findById(1L))
-                .thenReturn(Optional.of(usuario));
+                .thenReturn(Optional.of(user));
 
-        when(userMapper.toResponseDTO(usuario))
+        when(userMapper.toResponseDTO(user))
                 .thenReturn(
                         UserResponse.builder()
                                 .id(1L)
@@ -108,11 +108,11 @@ public class UserServiceImplTest {
                                 .build()
                 );
 
-        UserResponse resultado =
-                usuarioService.buscarUsuarioPorId(1L);
+        UserResponse result =
+                userService.findUserById(1L);
 
-        assertNotNull(resultado);
-        assertEquals(1L, resultado.getId());
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
     }
 
     @Test
@@ -122,37 +122,37 @@ public class UserServiceImplTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class,
-                () -> usuarioService.buscarUsuarioPorId(99L));
+                () -> userService.findUserById(99L));
     }
 
     @Test
     void DeletarUsuarioComSucesso() {
 
-        User usuario = User.builder()
+        User user = User.builder()
                 .id(1L)
                 .build();
 
         when(userRepository.findById(1L))
-                .thenReturn(Optional.of(usuario));
+                .thenReturn(Optional.of(user));
 
-        usuarioService.deletarUsuario(1L);
+        userService.deleteUser(1L);
 
-        verify(userRepository).delete(usuario);
+        verify(userRepository).delete(user);
     }
 
     @Test
     void LancarExcecaoAoDeletarUsuarioComVeterinario() {
 
-        User usuario = User.builder()
+        User user = User.builder()
                 .id(1L)
-                .veterinario(new Veterinarian())
+                .veterinarian(new Veterinarian())
                 .build();
 
         when(userRepository.findById(1L))
-                .thenReturn(Optional.of(usuario));
+                .thenReturn(Optional.of(user));
 
         assertThrows(UserHasVeterinarianException.class,
-                () -> usuarioService.deletarUsuario(1L));
+                () -> userService.deleteUser(1L));
 
         verify(userRepository, never()).delete(any());
     }
