@@ -19,31 +19,31 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponse> criarUsuario (@Valid @RequestBody CreateUserRequest dto) {
-        UserResponse response = userService.criarUsuario(dto);
+    public ResponseEntity<UserResponse> createUser (@Valid @RequestBody CreateUserRequest dto) {
+        UserResponse response = userService.createUser(dto);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> listarUsuarios(){
-        List<UserResponse> lista = userService.listarUsuarios();
-        return ResponseEntity.ok(lista);
+    public ResponseEntity<List<UserResponse>> findAllUsers(){
+        List<UserResponse> list = userService.findAllUsers();
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> buscarUsuarioPorId(@PathVariable Long id) {
-        UserResponse usuario = userService.buscarUsuarioPorId(id);
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<UserResponse> findUserById(@PathVariable Long id) {
+        UserResponse user = userService.findUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> atualizar(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest dto) {
-        return ResponseEntity.ok(userService.atualizar(id, dto));
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @RequestBody @Valid UpdateUserRequest dto) {
+        return ResponseEntity.ok(userService.updateUser(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
-        userService.deletarUsuario(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

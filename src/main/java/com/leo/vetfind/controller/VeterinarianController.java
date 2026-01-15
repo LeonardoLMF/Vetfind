@@ -19,33 +19,33 @@ public class VeterinarianController {
     private final VeterinarianServiceImpl veterinarioService;
 
     @PostMapping
-    public ResponseEntity<VeterinarianResponse> criarVeterinario(@Valid @RequestBody CreateVeterinarianRequest dto) {
-        VeterinarianResponse response = veterinarioService.criarVeterinario(dto);
+    public ResponseEntity<VeterinarianResponse> create(@Valid @RequestBody CreateVeterinarianRequest dto) {
+        VeterinarianResponse response = veterinarioService.createVeterinarian(dto);
             return ResponseEntity.ok(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<VeterinarianResponse>> getAll() {
-            return ResponseEntity.ok(veterinarioService.getAll());
+    public ResponseEntity<List<VeterinarianResponse>> findAllVeterinarian() {
+            return ResponseEntity.ok(veterinarioService.findAllVeterinarians());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<VeterinarianResponse> getById(@PathVariable Long id) {
-        VeterinarianResponse response = veterinarioService.getById(id);
+    public ResponseEntity<VeterinarianResponse> findVeterinarianById(@PathVariable Long id) {
+        VeterinarianResponse response = veterinarioService.findVeterinarianById(id);
             return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VeterinarianResponse> atualizar(@PathVariable Long id, @Valid @RequestBody UpdateVeterinarianRequest dto) {
+    public ResponseEntity<VeterinarianResponse> updateVeterinarian (@PathVariable Long id, @Valid @RequestBody UpdateVeterinarianRequest dto) {
         VeterinarianResponse response =
-                veterinarioService.atualizar(id, dto);
+                veterinarioService.updateVeterinarian(id, dto);
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        veterinarioService.deletar(id);
+    public ResponseEntity<Void> deleteVeterinarian (@PathVariable Long id) {
+        veterinarioService.deleteVeterinarian(id);
         return ResponseEntity.noContent().build();
     }
 
