@@ -7,7 +7,7 @@ import com.leo.vetfind.entity.User;
 import com.leo.vetfind.exception.EmailJaCadastradoException;
 import com.leo.vetfind.exception.UsuarioNotFoundException;
 import com.leo.vetfind.exception.UsuarioPossuiVeterinarioException;
-import com.leo.vetfind.mapper.UsuarioMapper;
+import com.leo.vetfind.mapper.UserMapper;
 import com.leo.vetfind.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService{
 
     private final UserRepository userRepository;
-    private final UsuarioMapper usuarioMapper;
+    private final UserMapper userMapper;
 
     public UserResponse criarUsuario(CreateUserRequest dto) {
         // Garantir que o email seja unico
@@ -28,9 +28,9 @@ public class UsuarioServiceImpl implements UsuarioService{
         }
 
         // cria um usuario e persiste o mesmo
-        User usuario = usuarioMapper.toEntity(dto);
+        User usuario = userMapper.toEntity(dto);
         User salvo = userRepository.save(usuario);
-        return usuarioMapper.toResponseDTO(salvo);
+        return userMapper.toResponseDTO(salvo);
     }
 
     // busca todos os usuarios (get all)
@@ -38,7 +38,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     public List<UserResponse> listarUsuarios() {
         return userRepository.findAll()
                 .stream()
-                .map(usuarioMapper::toResponseDTO)
+                .map(userMapper::toResponseDTO)
                 .toList();
     }
 
@@ -47,7 +47,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     public UserResponse buscarUsuarioPorId(Long id) {
         User usuario = userRepository.findById(id)
                 .orElseThrow(() -> new UsuarioNotFoundException(id));
-        return usuarioMapper.toResponseDTO(usuario);
+        return userMapper.toResponseDTO(usuario);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class UsuarioServiceImpl implements UsuarioService{
 
         User atualizado = userRepository.save(usuario);
 
-        return usuarioMapper.toResponseDTO(atualizado);
+        return userMapper.toResponseDTO(atualizado);
     }
 
     @Override

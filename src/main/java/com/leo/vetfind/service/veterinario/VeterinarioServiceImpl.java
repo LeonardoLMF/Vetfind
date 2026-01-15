@@ -7,7 +7,7 @@ import com.leo.vetfind.entity.User;
 import com.leo.vetfind.entity.UserType;
 import com.leo.vetfind.entity.Veterinarian;
 import com.leo.vetfind.exception.*;
-import com.leo.vetfind.mapper.VeterinarioMapper;
+import com.leo.vetfind.mapper.VeterinarianMapper;
 import com.leo.vetfind.repository.UserRepository;
 import com.leo.vetfind.repository.VeterinarianRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 
     private final VeterinarianRepository veterinarianRepository;
     private final UserRepository userRepository;
-    private final VeterinarioMapper veterinarioMapper;
+    private final VeterinarianMapper veterinarianMapper;
 
     @Override
     public VeterinarianResponse criarVeterinario(CreateVeterinarianRequest dto) {
@@ -54,7 +54,7 @@ public class VeterinarioServiceImpl implements VeterinarioService{
         // persiste
         Veterinarian salvo = veterinarianRepository.save(veterinario);
 
-        return veterinarioMapper.toResponseDTO(salvo);
+        return veterinarianMapper.toResponseDTO(salvo);
 
     }
 
@@ -63,7 +63,7 @@ public class VeterinarioServiceImpl implements VeterinarioService{
         Veterinarian veterinario = veterinarianRepository.findById(id)
                 .orElseThrow(() -> new VeterinarioNotFoundException(id));
 
-        return veterinarioMapper.toResponseDTO(veterinario);
+        return veterinarianMapper.toResponseDTO(veterinario);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class VeterinarioServiceImpl implements VeterinarioService{
         return veterinarianRepository
                 .findByUsuario_TipoUsuario(UserType.VETERINARIO)
                 .stream()
-                .map(veterinarioMapper::toResponseDTO)
+                .map(veterinarianMapper::toResponseDTO)
                 .toList();
     }
 
@@ -90,7 +90,7 @@ public class VeterinarioServiceImpl implements VeterinarioService{
 
         Veterinarian atualizado = veterinarianRepository.save(veterinario);
 
-        return veterinarioMapper.toResponseDTO(atualizado);
+        return veterinarianMapper.toResponseDTO(atualizado);
     }
 
     @Override

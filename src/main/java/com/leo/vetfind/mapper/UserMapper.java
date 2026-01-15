@@ -8,15 +8,15 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface UsuarioMapper {
+public interface UserMapper {
 
     // dto > entity
     User toEntity(CreateUserRequest dto);
 
 
     //entity > dto
-    UserResponse toResponseDTO(User usuario);
+    UserResponse toResponseDTO(User user);
 
     //lista
-    List<UserResponse> toResponseDTOList (List<User> usuarios);
+    List<UserResponse> toResponseDTOList (List<User> users);
 }

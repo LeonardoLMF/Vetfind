@@ -7,7 +7,7 @@ import com.leo.vetfind.entity.User;
 import com.leo.vetfind.entity.UserType;
 import com.leo.vetfind.entity.Veterinarian;
 import com.leo.vetfind.exception.*;
-import com.leo.vetfind.mapper.VeterinarioMapper;
+import com.leo.vetfind.mapper.VeterinarianMapper;
 import com.leo.vetfind.repository.UserRepository;
 import com.leo.vetfind.repository.VeterinarianRepository;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class VeterinarioServiceImplTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private VeterinarioMapper veterinarioMapper;
+    private VeterinarianMapper veterinarianMapper;
     @InjectMocks
     private VeterinarioServiceImpl veterinarioService;
 
@@ -69,7 +69,7 @@ public class VeterinarioServiceImplTest {
         when(veterinarianRepository.save(any(Veterinarian.class)))
                 .thenReturn(veterinario);
 
-        when(veterinarioMapper.toResponseDTO(veterinario))
+        when(veterinarianMapper.toResponseDTO(veterinario))
                 .thenReturn(responseEsperado);
 
         //wh
@@ -85,7 +85,7 @@ public class VeterinarioServiceImplTest {
         verify(veterinarianRepository).existsByCrmv("CRMV123");
         verify(userRepository).findById(1L);
         verify(veterinarianRepository).save(any(Veterinarian.class));
-        verify(veterinarioMapper).toResponseDTO(veterinario);
+        verify(veterinarianMapper).toResponseDTO(veterinario);
 
     }
 
@@ -148,7 +148,7 @@ public class VeterinarioServiceImplTest {
         when(veterinarianRepository.findById(10L))
                 .thenReturn(Optional.of(veterinario));
 
-        when(veterinarioMapper.toResponseDTO(veterinario))
+        when(veterinarianMapper.toResponseDTO(veterinario))
                 .thenReturn(new VeterinarianResponse(10L, "CRMV123", 1L));
 
         VeterinarianResponse resultado =
@@ -177,10 +177,10 @@ public class VeterinarioServiceImplTest {
         when(veterinarianRepository.findByUsuario_TipoUsuario(UserType.VETERINARIO))
                 .thenReturn(List.of(vet1, vet2));
 
-        when(veterinarioMapper.toResponseDTO(vet1))
+        when(veterinarianMapper.toResponseDTO(vet1))
                 .thenReturn(new VeterinarianResponse(1L, "CRMV1", 10L));
 
-        when(veterinarioMapper.toResponseDTO(vet2))
+        when(veterinarianMapper.toResponseDTO(vet2))
                 .thenReturn(new VeterinarianResponse(2L, "CRMV2", 20L));
 
         List<VeterinarianResponse> resultado = veterinarioService.getAll();
@@ -215,7 +215,7 @@ public class VeterinarioServiceImplTest {
         when(veterinarianRepository.save(any(Veterinarian.class)))
                 .thenReturn(veterinarioAtualizado);
 
-        when(veterinarioMapper.toResponseDTO(veterinarioAtualizado))
+        when(veterinarianMapper.toResponseDTO(veterinarioAtualizado))
                 .thenReturn(responseDTO);
 
         VeterinarianResponse resultado =

@@ -8,12 +8,12 @@ import org.mapstruct.Mapping;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface VeterinarioMapper {
+public interface VeterinarianMapper {
 
     // entity > dto
-    @Mapping(source = "usuario.id", target = "usuarioId")
-    VeterinarianResponse toResponseDTO(Veterinarian veterinario);
+    @Mapping(source = "user.id", target = "userId")
+    VeterinarianResponse toResponseDTO(Veterinarian veterinarian);
 
     // Lista
-    List<VeterinarianResponse> toResponseDTOList(List<Veterinarian> veterinarios);
+    List<VeterinarianResponse> toResponseDTOList(List<Veterinarian> veterinarians);
 }

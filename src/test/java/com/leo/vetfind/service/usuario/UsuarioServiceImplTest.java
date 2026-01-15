@@ -5,7 +5,7 @@ import com.leo.vetfind.dto.user.UserResponse;
 import com.leo.vetfind.entity.User;
 import com.leo.vetfind.entity.Veterinarian;
 import com.leo.vetfind.exception.*;
-import com.leo.vetfind.mapper.UsuarioMapper;
+import com.leo.vetfind.mapper.UserMapper;
 import com.leo.vetfind.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ public class UsuarioServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private UsuarioMapper usuarioMapper;
+    private UserMapper userMapper;
 
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
@@ -53,13 +53,13 @@ public class UsuarioServiceImplTest {
         when(userRepository.existsByEmail("teste@email.com"))
                 .thenReturn(false);
 
-        when(usuarioMapper.toEntity(request))
+        when(userMapper.toEntity(request))
                 .thenReturn(usuario);
 
         when(userRepository.save(usuario))
                 .thenReturn(usuario);
 
-        when(usuarioMapper.toResponseDTO(usuario))
+        when(userMapper.toResponseDTO(usuario))
                 .thenReturn(response);
 
         UserResponse resultado =
@@ -100,7 +100,7 @@ public class UsuarioServiceImplTest {
         when(userRepository.findById(1L))
                 .thenReturn(Optional.of(usuario));
 
-        when(usuarioMapper.toResponseDTO(usuario))
+        when(userMapper.toResponseDTO(usuario))
                 .thenReturn(
                         UserResponse.builder()
                                 .id(1L)
