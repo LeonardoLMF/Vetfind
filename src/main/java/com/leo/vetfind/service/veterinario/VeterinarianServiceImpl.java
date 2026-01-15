@@ -17,14 +17,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class VeterinarioServiceImpl implements VeterinarioService{
+public class VeterinarianServiceImpl implements VeterinarianService {
 
     private final VeterinarianRepository veterinarianRepository;
     private final UserRepository userRepository;
     private final VeterinarianMapper veterinarianMapper;
 
     @Override
-    public VeterinarianResponse criarVeterinario(CreateVeterinarianRequest dto) {
+    public VeterinarianResponse createVeterinarian(CreateVeterinarianRequest dto) {
 
         // verifica se ja existe alg registrado com a crmv
         if (veterinarianRepository.existsByCrmv(dto.getCrmv())) {
@@ -32,77 +32,77 @@ public class VeterinarioServiceImpl implements VeterinarioService{
         }
 
         // verifica se o usuario existe
-        User usuario = userRepository.findById(dto.getUsuarioId())
-                .orElseThrow(() -> new UserNotFoundException(dto.getUsuarioId()));
+        User user = userRepository.findById(dto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(dto.getUserId()));
 
         // verifica se o tipo do usuario é diferente de VETERINARIO
-        if (usuario.getTipoUsuario() != UserType.VETERINARIO) {
+        if (user.getUserType() != UserType.VETERINARIO) {
             throw new InvalidUserTypeException();
         }
 
         // verifica se o usuario ja possui cadastro
-        if (usuario.getVeterinario() != null) {
+        if (user.getVeterinarian() != null) {
             throw new UserAlreadyVeterinarianException();
         }
 
         //cria uma entidade veterinario
-        Veterinarian veterinario = Veterinarian.builder()
+        Veterinarian veterinarian = Veterinarian.builder()
                 .crmv(dto.getCrmv())
-                .usuario(usuario)
+                .user(user)
                 .build();
 
         // persiste
-        Veterinarian salvo = veterinarianRepository.save(veterinario);
+        Veterinarian saved = veterinarianRepository.save(veterinarian);
 
-        return veterinarianMapper.toResponseDTO(salvo);
+        return veterinarianMapper.toResponseDTO(saved);
 
     }
 
     @Override
-    public VeterinarianResponse getById(Long id) {
-        Veterinarian veterinario = veterinarianRepository.findById(id)
+    public VeterinarianResponse findVeterinarianById(Long id) {
+        Veterinarian veterinarian = veterinarianRepository.findById(id)
                 .orElseThrow(() -> new VeterinarianNotFoundException(id));
 
-        return veterinarianMapper.toResponseDTO(veterinario);
+        return veterinarianMapper.toResponseDTO(veterinarian);
     }
 
     @Override
-    public List<VeterinarianResponse> getAll() {
+    public List<VeterinarianResponse> findAllVeterinarians() {
         return veterinarianRepository
-                .findByUsuario_TipoUsuario(UserType.VETERINARIO)
+                .findByUser_UserType(UserType.VETERINARIO)
                 .stream()
                 .map(veterinarianMapper::toResponseDTO)
                 .toList();
     }
 
     @Override
-    public VeterinarianResponse atualizar(Long id, UpdateVeterinarianRequest dto) {
+    public VeterinarianResponse updateVeterinarian(Long id, UpdateVeterinarianRequest dto) {
 
-        Veterinarian veterinario = veterinarianRepository.findById(id)
+        Veterinarian veterinarian = veterinarianRepository.findById(id)
                 .orElseThrow(() -> new VeterinarianNotFoundException(id));
 
-        if (!veterinario.getCrmv().equals(dto.getCrmv())
+        if (!veterinarian.getCrmv().equals(dto.getCrmv())
                 && veterinarianRepository.existsByCrmv(dto.getCrmv())) {
             throw new CrmvAlreadyExistsException();
         }
 
-        veterinario.setCrmv(dto.getCrmv());
+        veterinarian.setCrmv(dto.getCrmv());
 
-        Veterinarian atualizado = veterinarianRepository.save(veterinario);
+        Veterinarian updated = veterinarianRepository.save(veterinarian);
 
-        return veterinarianMapper.toResponseDTO(atualizado);
+        return veterinarianMapper.toResponseDTO(updated);
     }
 
     @Override
-    public void deletar(Long id) {
+    public void deleteVeterinarian(Long id) {
 
-        Veterinarian veterinario = veterinarianRepository.findById(id)
+        Veterinarian veterinarian = veterinarianRepository.findById(id)
                 .orElseThrow(() -> new VeterinarianNotFoundException(id));
 
-        User usuario = veterinario.getUsuario();
-        usuario.setVeterinario(null);
+        User usuario = veterinarian.getUser();
+        usuario.setVeterinarian(null);
 
-        veterinarianRepository.delete(veterinario);
+        veterinarianRepository.delete(veterinarian);
     }
 
 }

@@ -3,7 +3,7 @@ package com.leo.vetfind.controller;
 import com.leo.vetfind.dto.veterinarian.CreateVeterinarianRequest;
 import com.leo.vetfind.dto.veterinarian.VeterinarianResponse;
 import com.leo.vetfind.dto.veterinarian.UpdateVeterinarianRequest;
-import com.leo.vetfind.service.veterinario.VeterinarioServiceImpl;
+import com.leo.vetfind.service.veterinario.VeterinarianServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VeterinarianController {
 
-    private final VeterinarioServiceImpl veterinarioService;
+    private final VeterinarianServiceImpl veterinarioService;
 
     @PostMapping
     public ResponseEntity<VeterinarianResponse> criarVeterinario(@Valid @RequestBody CreateVeterinarianRequest dto) {

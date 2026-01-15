@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-public class UsuarioServiceImplTest {
+public class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
@@ -29,7 +29,7 @@ public class UsuarioServiceImplTest {
     private UserMapper userMapper;
 
     @InjectMocks
-    private UsuarioServiceImpl usuarioService;
+    private UserServiceImpl usuarioService;
 
     @Test
     void CriarUsuarioComSucesso() {

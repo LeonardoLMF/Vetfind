@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class VeterinarioServiceImplTest {
+public class VeterinarianServiceImplTest {
 
     @Mock
     private VeterinarianRepository veterinarianRepository;
@@ -32,7 +32,7 @@ public class VeterinarioServiceImplTest {
     @Mock
     private VeterinarianMapper veterinarianMapper;
     @InjectMocks
-    private VeterinarioServiceImpl veterinarioService;
+    private VeterinarianServiceImpl veterinarioService;
 
     @Test
     void CriarVeterinarioComSucesso() {
