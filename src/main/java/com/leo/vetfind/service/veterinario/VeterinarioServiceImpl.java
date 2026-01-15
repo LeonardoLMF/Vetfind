@@ -36,7 +36,7 @@ public class VeterinarioServiceImpl implements VeterinarioService{
                 .orElseThrow(() -> new UsuarioNotFoundException(dto.getUsuarioId()));
 
         // verifica se o tipo do usuario é diferente de VETERINARIO
-        if (usuario.getUserType() != UserType.VETERINARIO) {
+        if (usuario.getTipoUsuario() != UserType.VETERINARIO) {
             throw new TipoUsuarioInvalidoException();
         }
 

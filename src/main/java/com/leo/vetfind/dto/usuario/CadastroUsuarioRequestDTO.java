@@ -25,5 +25,5 @@ public class CadastroUsuarioRequestDTO {
     private String telefone;
 
     @NotNull(message = "O tipo do usuário é obrigatório")
-    private UserType userType;
+    private UserType tipoUsuario;
 }

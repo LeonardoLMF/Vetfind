@@ -31,7 +31,7 @@ public class Usuario {
     //determino se o usuario é um PROPRIETARIO ou VETERINARIO
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserType userType;
+    private UserType tipoUsuario;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Veterinario veterinario;

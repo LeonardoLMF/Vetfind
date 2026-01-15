@@ -13,6 +13,6 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
 
     Optional<Veterinario> findByCrmv (String crmv);
     boolean existsByCrmv(String crmv);
-    List<Veterinario> findByUsuario_TipoUsuario(UserType userType);
+    List<Veterinario> findByUsuario_TipoUsuario(UserType tipoUsuario);
 
 }
