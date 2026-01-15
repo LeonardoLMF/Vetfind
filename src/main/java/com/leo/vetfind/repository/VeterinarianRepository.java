@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface VeterinarioRepository extends JpaRepository<Veterinarian, Long> {
+public interface VeterinarianRepository extends JpaRepository<Veterinarian, Long> {
 
     Optional<Veterinarian> findByCrmv (String crmv);
     boolean existsByCrmv(String crmv);
-    List<Veterinarian> findByUsuario_TipoUsuario(UserType tipoUsuario);
+    List<Veterinarian> findByUser_UserType(UserType userType);
 
 }

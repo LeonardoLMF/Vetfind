@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
     //métodos inicias, futuramente sera implementado funcionalidades de acordo com o cliente
 
     //buscar usuario pelo email

@@ -8,8 +8,8 @@ import com.leo.vetfind.entity.UserType;
 import com.leo.vetfind.entity.Veterinarian;
 import com.leo.vetfind.exception.*;
 import com.leo.vetfind.mapper.VeterinarioMapper;
-import com.leo.vetfind.repository.UsuarioRepository;
-import com.leo.vetfind.repository.VeterinarioRepository;
+import com.leo.vetfind.repository.UserRepository;
+import com.leo.vetfind.repository.VeterinarianRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,9 +26,9 @@ import static org.mockito.Mockito.*;
 public class VeterinarioServiceImplTest {
 
     @Mock
-    private VeterinarioRepository veterinarioRepository;
+    private VeterinarianRepository veterinarianRepository;
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
     @Mock
     private VeterinarioMapper veterinarioMapper;
     @InjectMocks
@@ -60,13 +60,13 @@ public class VeterinarioServiceImplTest {
                         1L
                 );
 
-        when(veterinarioRepository.existsByCrmv("CRMV123"))
+        when(veterinarianRepository.existsByCrmv("CRMV123"))
                 .thenReturn(false);
 
-        when(usuarioRepository.findById(1L))
+        when(userRepository.findById(1L))
                 .thenReturn(java.util.Optional.of(usuario));
 
-        when(veterinarioRepository.save(any(Veterinarian.class)))
+        when(veterinarianRepository.save(any(Veterinarian.class)))
                 .thenReturn(veterinario);
 
         when(veterinarioMapper.toResponseDTO(veterinario))
@@ -82,9 +82,9 @@ public class VeterinarioServiceImplTest {
         assertEquals("CRMV123", resultado.getCrmv());
         assertEquals(1L, resultado.getUsuarioId());
 
-        verify(veterinarioRepository).existsByCrmv("CRMV123");
-        verify(usuarioRepository).findById(1L);
-        verify(veterinarioRepository).save(any(Veterinarian.class));
+        verify(veterinarianRepository).existsByCrmv("CRMV123");
+        verify(userRepository).findById(1L);
+        verify(veterinarianRepository).save(any(Veterinarian.class));
         verify(veterinarioMapper).toResponseDTO(veterinario);
 
     }
@@ -98,7 +98,7 @@ public class VeterinarioServiceImplTest {
                 .usuarioId(1L)
                 .build();
 
-        when(veterinarioRepository.existsByCrmv("CRMV123"))
+        when(veterinarianRepository.existsByCrmv("CRMV123"))
                 .thenReturn(true);
 
         // act + assert
@@ -109,7 +109,7 @@ public class VeterinarioServiceImplTest {
 
         assertEquals("CRMV ja cadastrado", exception.getMessage());
 
-        verify(veterinarioRepository, never()).save(any());
+        verify(veterinarianRepository, never()).save(any());
     }
 
     @Test
@@ -120,10 +120,10 @@ public class VeterinarioServiceImplTest {
                 .usuarioId(99L)
                 .build();
 
-        when(veterinarioRepository.existsByCrmv("CRMV123"))
+        when(veterinarianRepository.existsByCrmv("CRMV123"))
                 .thenReturn(false);
 
-        when(usuarioRepository.findById(99L))
+        when(userRepository.findById(99L))
                 .thenReturn(Optional.empty());
 
 
@@ -134,7 +134,7 @@ public class VeterinarioServiceImplTest {
 
         assertEquals("User com o ID 99 não encontrado", exception.getMessage());
 
-        verify(veterinarioRepository, never()).save(any());
+        verify(veterinarianRepository, never()).save(any());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class VeterinarioServiceImplTest {
                 .usuario(User.builder().id(1L).build())
                 .build();
 
-        when(veterinarioRepository.findById(10L))
+        when(veterinarianRepository.findById(10L))
                 .thenReturn(Optional.of(veterinario));
 
         when(veterinarioMapper.toResponseDTO(veterinario))
@@ -174,7 +174,7 @@ public class VeterinarioServiceImplTest {
                 .usuario(User.builder().id(20L).build())
                 .build();
 
-        when(veterinarioRepository.findByUsuario_TipoUsuario(UserType.VETERINARIO))
+        when(veterinarianRepository.findByUsuario_TipoUsuario(UserType.VETERINARIO))
                 .thenReturn(List.of(vet1, vet2));
 
         when(veterinarioMapper.toResponseDTO(vet1))
@@ -209,10 +209,10 @@ public class VeterinarioServiceImplTest {
         VeterinarianResponse responseDTO =
                 new VeterinarianResponse(10L, "CRMV999", null);
 
-        when(veterinarioRepository.findById(veterinarioId))
+        when(veterinarianRepository.findById(veterinarioId))
                 .thenReturn(Optional.of(veterinarioExistente));
 
-        when(veterinarioRepository.save(any(Veterinarian.class)))
+        when(veterinarianRepository.save(any(Veterinarian.class)))
                 .thenReturn(veterinarioAtualizado);
 
         when(veterinarioMapper.toResponseDTO(veterinarioAtualizado))
@@ -224,13 +224,13 @@ public class VeterinarioServiceImplTest {
         assertNotNull(resultado);
         assertEquals("CRMV999", resultado.getCrmv());
 
-        verify(veterinarioRepository).findById(veterinarioId);
-        verify(veterinarioRepository).save(any(Veterinarian.class));
+        verify(veterinarianRepository).findById(veterinarioId);
+        verify(veterinarianRepository).save(any(Veterinarian.class));
     }
 
     @Test
     void DeletarVeterinarioInexistente() {
-        when(veterinarioRepository.findById(99L))
+        when(veterinarianRepository.findById(99L))
                 .thenReturn(Optional.empty());
 
         assertThrows(VeterinarioNotFoundException.class,
@@ -250,10 +250,10 @@ public class VeterinarioServiceImplTest {
                 .userType(UserType.PROPRIETARIO) // NÃO é veterinário
                 .build();
 
-        when(veterinarioRepository.existsByCrmv("CRMV123"))
+        when(veterinarianRepository.existsByCrmv("CRMV123"))
                 .thenReturn(false);
 
-        when(usuarioRepository.findById(1L))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(usuario));
 
         TipoUsuarioInvalidoException exception =
@@ -263,7 +263,7 @@ public class VeterinarioServiceImplTest {
 
         assertEquals("User não é do tipo VETERINARIO", exception.getMessage());
 
-        verify(veterinarioRepository, never()).save(any());
+        verify(veterinarianRepository, never()).save(any());
     }
 
     @Test
@@ -280,10 +280,10 @@ public class VeterinarioServiceImplTest {
                 .veterinario(Veterinarian.builder().id(10L).build())
                 .build();
 
-        when(veterinarioRepository.existsByCrmv("CRMV123"))
+        when(veterinarianRepository.existsByCrmv("CRMV123"))
                 .thenReturn(false);
 
-        when(usuarioRepository.findById(1L))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(usuario));
 
         VeterinarioJaVinculadoException exception =
@@ -293,7 +293,7 @@ public class VeterinarioServiceImplTest {
 
         assertEquals("Usuário ja possui cadastro de veterinario", exception.getMessage());
 
-        verify(veterinarioRepository, never()).save(any());
+        verify(veterinarianRepository, never()).save(any());
     }
 
 

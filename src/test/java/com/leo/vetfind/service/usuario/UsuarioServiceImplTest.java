@@ -6,7 +6,7 @@ import com.leo.vetfind.entity.User;
 import com.leo.vetfind.entity.Veterinarian;
 import com.leo.vetfind.exception.*;
 import com.leo.vetfind.mapper.UsuarioMapper;
-import com.leo.vetfind.repository.UsuarioRepository;
+import com.leo.vetfind.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.*;
 public class UsuarioServiceImplTest {
 
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Mock
     private UsuarioMapper usuarioMapper;
@@ -50,13 +50,13 @@ public class UsuarioServiceImplTest {
                         .email("teste@email.com")
                         .build();
 
-        when(usuarioRepository.existsByEmail("teste@email.com"))
+        when(userRepository.existsByEmail("teste@email.com"))
                 .thenReturn(false);
 
         when(usuarioMapper.toEntity(request))
                 .thenReturn(usuario);
 
-        when(usuarioRepository.save(usuario))
+        when(userRepository.save(usuario))
                 .thenReturn(usuario);
 
         when(usuarioMapper.toResponseDTO(usuario))
@@ -68,8 +68,8 @@ public class UsuarioServiceImplTest {
         assertNotNull(resultado);
         assertEquals("teste@email.com", resultado.getEmail());
 
-        verify(usuarioRepository).existsByEmail("teste@email.com");
-        verify(usuarioRepository).save(usuario);
+        verify(userRepository).existsByEmail("teste@email.com");
+        verify(userRepository).save(usuario);
     }
 
     @Test
@@ -80,13 +80,13 @@ public class UsuarioServiceImplTest {
                         .email("teste@email.com")
                         .build();
 
-        when(usuarioRepository.existsByEmail("teste@email.com"))
+        when(userRepository.existsByEmail("teste@email.com"))
                 .thenReturn(true);
 
         assertThrows(EmailJaCadastradoException.class,
                 () -> usuarioService.criarUsuario(request));
 
-        verify(usuarioRepository, never()).save(any());
+        verify(userRepository, never()).save(any());
     }
 
     @Test
@@ -97,7 +97,7 @@ public class UsuarioServiceImplTest {
                 .email("teste@email.com")
                 .build();
 
-        when(usuarioRepository.findById(1L))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(usuario));
 
         when(usuarioMapper.toResponseDTO(usuario))
@@ -118,7 +118,7 @@ public class UsuarioServiceImplTest {
     @Test
     void LancarExcecaoQuandoUsuarioNaoExistir() {
 
-        when(usuarioRepository.findById(99L))
+        when(userRepository.findById(99L))
                 .thenReturn(Optional.empty());
 
         assertThrows(UsuarioNotFoundException.class,
@@ -132,12 +132,12 @@ public class UsuarioServiceImplTest {
                 .id(1L)
                 .build();
 
-        when(usuarioRepository.findById(1L))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(usuario));
 
         usuarioService.deletarUsuario(1L);
 
-        verify(usuarioRepository).delete(usuario);
+        verify(userRepository).delete(usuario);
     }
 
     @Test
@@ -148,12 +148,12 @@ public class UsuarioServiceImplTest {
                 .veterinario(new Veterinarian())
                 .build();
 
-        when(usuarioRepository.findById(1L))
+        when(userRepository.findById(1L))
                 .thenReturn(Optional.of(usuario));
 
         assertThrows(UsuarioPossuiVeterinarioException.class,
                 () -> usuarioService.deletarUsuario(1L));
 
-        verify(usuarioRepository, never()).delete(any());
+        verify(userRepository, never()).delete(any());
     }
 }
