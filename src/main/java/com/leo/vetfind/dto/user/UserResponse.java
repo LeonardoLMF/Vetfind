@@ -1,5 +1,6 @@
 package com.leo.vetfind.dto.user;
 
+import com.leo.vetfind.dto.shared.AddressDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -23,4 +24,13 @@ public class UserResponse {
 
     @Schema(description = "Type of user", example = "PROPRIETARIO")
     private String userType;
+
+    @Schema(description = "User's address")
+    private AddressDTO address;
+
+    @Schema(description = "Latitude", example = "-13.2704")
+    private Double latitude;
+
+    @Schema(description = "Longitude", example = "-13.2704")
+    private Double longitude;
 }

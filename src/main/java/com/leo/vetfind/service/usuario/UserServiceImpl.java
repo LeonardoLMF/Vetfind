@@ -76,8 +76,19 @@ public class UserServiceImpl implements UserService {
         user.setPhone(dto.getPhone());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-        User updated = userRepository.save(user);
+        if (dto.getAddress() != null) {
+            user.setAddress(userMapper.toAddress(dto.getAddress()));
+        }
 
+        if (dto.getLatitude() != null) {
+            user.setLatitude(dto.getLatitude());
+        }
+
+        if (dto.getLongitude() != null) {
+            user.setLongitude(dto.getLongitude());
+        }
+
+        User updated = userRepository.save(user);
         return userMapper.toResponseDTO(updated);
     }
 

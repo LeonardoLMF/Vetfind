@@ -33,6 +33,15 @@ public class User {
     @Column(nullable = false, name = "tipo_usuario")
     private UserType userType;
 
+    @Embedded
+    private Address address;
+
+    @Column(name = "latitude")
+    private Double latitude;
+
+    @Column(name = "longitude")
+    private Double longitude;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Veterinarian veterinarian;
 }

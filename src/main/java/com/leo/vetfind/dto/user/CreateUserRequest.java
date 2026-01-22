@@ -1,8 +1,10 @@
 package com.leo.vetfind.dto.user;
 
 
+import com.leo.vetfind.dto.shared.AddressDTO;
 import com.leo.vetfind.entity.UserType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -32,4 +34,15 @@ public class CreateUserRequest {
     @NotNull(message = "O tipo do usuário é obrigatório")
     @Schema(description = "Type of user", example = "PROPRIETARIO", allowableValues = {"PROPRIETARIO", "VETERINARIO"})
     private UserType userType;
+
+    @Valid
+    @NotNull(message = "Address is required")
+    @Schema(description = "User's address")
+    private AddressDTO address;
+
+    @Schema(description = "Latitude (It's optional, for precise location)", example = "-67.6767")
+    private Double latitude;
+
+    @Schema(description = "Longitude (It's optional, for precise location)", example = "-10.1000")
+    private Double longitude;
 }

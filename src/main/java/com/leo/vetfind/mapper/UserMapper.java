@@ -1,7 +1,9 @@
 package com.leo.vetfind.mapper;
 
+import com.leo.vetfind.dto.shared.AddressDTO;
 import com.leo.vetfind.dto.user.CreateUserRequest;
 import com.leo.vetfind.dto.user.UserResponse;
+import com.leo.vetfind.entity.Address;
 import com.leo.vetfind.entity.User;
 import org.mapstruct.Mapper;
 
@@ -13,10 +15,13 @@ public interface UserMapper {
     // dto > entity
     User toEntity(CreateUserRequest dto);
 
-
     //entity > dto
     UserResponse toResponseDTO(User user);
 
     //lista
     List<UserResponse> toResponseDTOList (List<User> users);
+
+    Address toAddress(AddressDTO dto);
+
+    AddressDTO toAddressDTO(Address address);
 }

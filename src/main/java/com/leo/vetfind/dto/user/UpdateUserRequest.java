@@ -1,6 +1,8 @@
 package com.leo.vetfind.dto.user;
 
+import com.leo.vetfind.dto.shared.AddressDTO;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -30,4 +32,13 @@ public class UpdateUserRequest {
     @Schema(description = "User's new password", example = "newpassword", minLength = 5)
     private String password;
 
+    @Valid
+    @Schema(description = "User's address (optional)")
+    private AddressDTO address;
+
+    @Schema(description = "Latitude (optional)", example = "-12.5000")
+    private Double latitude;
+
+    @Schema(description = "Longitude (optional)", example = "-10.3333")
+    private Double longitude;
 }
